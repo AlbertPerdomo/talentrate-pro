@@ -6,12 +6,10 @@ export default function Admin() {
   const [form, setForm] = useState({
     name: '',
     description: '',
-    monthly_rate: '',
+    monthly_rate: ''
   });
 
-  useEffect(() => {
-    load();
-  }, []);
+  useEffect(() => { load(); }, []);
 
   const load = async () => {
     const { data } = await supabase.from('profiles').select('*');
@@ -19,10 +17,7 @@ export default function Admin() {
   };
 
   const save = async () => {
-    if (!form.name) return alert('Nombre requerido');
-
     await supabase.from('profiles').insert([form]);
-
     setForm({ name: '', description: '', monthly_rate: '' });
     load();
   };
@@ -33,7 +28,7 @@ export default function Admin() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex justify-center">
+    <div className="min-h-screen bg-gray-50 flex justify-center text-gray-900">
       <div className="w-full max-w-4xl p-10">
 
         <div className="flex justify-between mb-8">
@@ -49,61 +44,43 @@ export default function Admin() {
             placeholder="Recurso"
             className="w-full border p-2 mb-2 rounded"
             value={form.name}
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
+            onChange={(e)=>setForm({...form, name: e.target.value})}
           />
 
           <input
             placeholder="Expertise"
             className="w-full border p-2 mb-2 rounded"
             value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
+            onChange={(e)=>setForm({...form, description: e.target.value})}
           />
 
           <input
             placeholder="Valor COP"
             className="w-full border p-2 mb-4 rounded"
             value={form.monthly_rate}
-            onChange={(e) =>
-              setForm({ ...form, monthly_rate: e.target.value })
-            }
+            onChange={(e)=>setForm({...form, monthly_rate: e.target.value})}
           />
 
-          <button
-            onClick={save}
-            className="bg-black text-white px-4 py-2 rounded"
-          >
+          <button className="bg-black text-white px-4 py-2 rounded" onClick={save}>
             Guardar
           </button>
         </div>
 
-        {/* TABLE */}
+        {/* LIST */}
         <div className="bg-white p-6 rounded-xl shadow">
-          <h2 className="mb-4 font-semibold">Perfiles</h2>
-
-          {profiles.map((p) => (
-            <div
-              key={p.id}
-              className="flex justify-between border-b py-2"
-            >
+          {profiles.map(p => (
+            <div key={p.id} className="flex justify-between border-b py-2">
               <div>
                 <p className="font-medium">{p.name}</p>
-                <p className="text-sm text-gray-500">
-                  {p.description}
-                </p>
+                <p className="text-sm text-gray-500">{p.description}</p>
               </div>
-              <button
-                onClick={() => remove(p.id)}
-                className="text-red-500"
-              >
+              <button onClick={()=>remove(p.id)} className="text-red-500">
                 Eliminar
               </button>
             </div>
           ))}
         </div>
+
       </div>
     </div>
   );
