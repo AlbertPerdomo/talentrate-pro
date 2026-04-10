@@ -6,6 +6,7 @@ const seniorities = [
 ];
 
 export default function Admin() {
+
   const [profiles, setProfiles] = useState([]);
   const [form, setForm] = useState({
     name: "",
@@ -25,10 +26,7 @@ export default function Admin() {
   };
 
   const save = async () => {
-    if (!form.name || !form.monthly_rate) return;
-
     await supabase.from("profiles").insert([form]);
-
     setForm({ name: "", seniority: "Junior", monthly_rate: "" });
     load();
   };
@@ -39,18 +37,24 @@ export default function Admin() {
   };
 
   return (
-    <div style={{ background: "#f6f7f9", minHeight: "100vh" }}>
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: 30 }}>
+    <div>
 
+      {/* HEADER */}
+      <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
         <h1>Administrar Perfiles</h1>
 
-        {/* FORM */}
-        <div style={{
-          background: "#fff",
-          padding: 20,
-          borderRadius: 10,
-          marginTop: 20
-        }}>
+        <button
+          className="btn-ghost"
+          onClick={() => window.location.href = "/"}
+        >
+          ← Volver
+        </button>
+      </div>
+
+      {/* FORM */}
+      <div className="container">
+        <div className="card" style={{ display: "flex", gap: 10 }}>
+
           <input
             placeholder="Nombre del recurso"
             value={form.name}
@@ -60,40 +64,27 @@ export default function Admin() {
           <select
             value={form.seniority}
             onChange={(e)=>setForm({...form, seniority:e.target.value})}
-            style={{ marginTop: 10 }}
           >
             {seniorities.map(s => <option key={s}>{s}</option>)}
           </select>
 
           <input
             type="number"
-            placeholder="Valor mensual COP"
+            placeholder="Valor COP"
             value={form.monthly_rate}
             onChange={(e)=>setForm({...form, monthly_rate:e.target.value})}
-            style={{ marginTop: 10 }}
           />
 
-          <button
-            onClick={save}
-            style={{
-              marginTop: 10,
-              background: "#000",
-              color: "#fff",
-              padding: 10,
-              borderRadius: 6
-            }}
-          >
+          <button className="btn-primary" onClick={save}>
             Guardar
           </button>
         </div>
+      </div>
 
-        {/* LISTA */}
-        <div style={{
-          background: "#fff",
-          marginTop: 20,
-          borderRadius: 10,
-          padding: 20
-        }}>
+      {/* LISTA */}
+      <div className="container">
+        <div className="card">
+
           {profiles.map(p => (
             <div key={p.id} style={{
               display: "flex",
@@ -108,15 +99,16 @@ export default function Admin() {
 
               <button
                 onClick={()=>remove(p.id)}
-                style={{ color: "red", background: "none", border: "none" }}
+                style={{ color: "red" }}
               >
                 Eliminar
               </button>
             </div>
           ))}
-        </div>
 
+        </div>
       </div>
+
     </div>
   );
 }
