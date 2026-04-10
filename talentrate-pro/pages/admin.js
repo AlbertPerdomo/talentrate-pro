@@ -1,7 +1,21 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
-const seniorities = ["Junior", "Semi Senior", "Senior"];
+const seniorities = [
+  "Intern",
+  "Trainee",
+  "Junior",
+  "Junior+",
+  "Semi Senior",
+  "Senior",
+  "Senior+",
+  "Lead",
+  "Tech Lead",
+  "Architect",
+  "Principal",
+  "Manager",
+  "Director"
+];
 
 export default function Admin() {
   const [profiles, setProfiles] = useState([]);
