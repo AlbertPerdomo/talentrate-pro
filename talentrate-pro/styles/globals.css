@@ -1,23 +1,46 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* RESET UI CLARA */
-body {
-  background: #f5f6f8;
-  color: #111;
+/* Layout limpio */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
 }
 
-/* Inputs visibles */
-input, select, textarea {
-  background: #ffffff;
-  color: #111;
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Botón principal */
+.btn-primary {
+  background: #000;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* Botón ghost */
+.btn-ghost {
+  background: none;
   border: 1px solid #ddd;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
 }
 
-/* Botones */
-button {
-  cursor: pointer;
+/* Tabla */
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 80px 1fr 1fr 40px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
 }
