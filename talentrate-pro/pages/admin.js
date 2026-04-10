@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 
+const seniorities = ["Junior", "Semi Senior", "Senior"];
+
 export default function Admin() {
   const [profiles, setProfiles] = useState([]);
   const [form, setForm] = useState({
     name: '',
-    description: '',
+    seniority: 'Junior',
     monthly_rate: ''
   });
 
@@ -18,7 +20,7 @@ export default function Admin() {
 
   const save = async () => {
     await supabase.from('profiles').insert([form]);
-    setForm({ name: '', description: '', monthly_rate: '' });
+    setForm({ name: '', seniority: 'Junior', monthly_rate: '' });
     load();
   };
 
@@ -44,21 +46,22 @@ export default function Admin() {
             placeholder="Recurso"
             className="w-full border p-2 mb-2 rounded"
             value={form.name}
-            onChange={(e)=>setForm({...form, name: e.target.value})}
+            onChange={(e)=>setForm({...form, name:e.target.value})}
           />
 
-          <input
-            placeholder="Expertise"
+          <select
             className="w-full border p-2 mb-2 rounded"
-            value={form.description}
-            onChange={(e)=>setForm({...form, description: e.target.value})}
-          />
+            value={form.seniority}
+            onChange={(e)=>setForm({...form, seniority:e.target.value})}
+          >
+            {seniorities.map(s => <option key={s}>{s}</option>)}
+          </select>
 
           <input
             placeholder="Valor COP"
             className="w-full border p-2 mb-4 rounded"
             value={form.monthly_rate}
-            onChange={(e)=>setForm({...form, monthly_rate: e.target.value})}
+            onChange={(e)=>setForm({...form, monthly_rate:e.target.value})}
           />
 
           <button className="bg-black text-white px-4 py-2 rounded" onClick={save}>
@@ -72,7 +75,7 @@ export default function Admin() {
             <div key={p.id} className="flex justify-between border-b py-2">
               <div>
                 <p className="font-medium">{p.name}</p>
-                <p className="text-sm text-gray-500">{p.description}</p>
+                <p className="text-sm text-gray-500">{p.seniority}</p>
               </div>
               <button onClick={()=>remove(p.id)} className="text-red-500">
                 Eliminar
