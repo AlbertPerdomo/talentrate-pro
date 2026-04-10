@@ -9,25 +9,25 @@ export default function Admin() {
 
   const [profiles, setProfiles] = useState([]);
   const [form, setForm] = useState({
-    name: "",
-    seniority: "Junior",
-    monthly_rate: ""
+    name:"",
+    seniority:"Junior",
+    monthly_rate:""
   });
 
-  useEffect(() => { load(); }, []);
+  useEffect(()=>{ load(); },[]);
 
   const load = async () => {
     const { data } = await supabase
       .from("profiles")
       .select("*")
-      .order("name", { ascending: true });
+      .order("name", { ascending:true });
 
     setProfiles(data || []);
   };
 
   const save = async () => {
     await supabase.from("profiles").insert([form]);
-    setForm({ name: "", seniority: "Junior", monthly_rate: "" });
+    setForm({ name:"", seniority:"Junior", monthly_rate:"" });
     load();
   };
 
@@ -40,20 +40,17 @@ export default function Admin() {
     <div>
 
       {/* HEADER */}
-      <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1>Administrar Perfiles</h1>
+      <div className="container" style={{ display:"flex", justifyContent:"space-between" }}>
+        <h1 className="title">Administrar Perfiles</h1>
 
-        <button
-          className="btn-ghost"
-          onClick={() => window.location.href = "/"}
-        >
+        <button className="btn-secondary" onClick={()=>window.location.href="/"}>
           ← Volver
         </button>
       </div>
 
       {/* FORM */}
       <div className="container">
-        <div className="card" style={{ display: "flex", gap: 10 }}>
+        <div className="card" style={{ display:"flex", gap:10 }}>
 
           <input
             placeholder="Nombre del recurso"
@@ -87,20 +84,17 @@ export default function Admin() {
 
           {profiles.map(p => (
             <div key={p.id} style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: 10,
-              borderBottom: "1px solid #eee"
+              display:"flex",
+              justifyContent:"space-between",
+              padding:"12px 0",
+              borderBottom:"1px solid #eee"
             }}>
               <div>
                 <strong>{p.name}</strong>
-                <p style={{ fontSize: 12 }}>{p.seniority}</p>
+                <p style={{ fontSize:12, color:"#666" }}>{p.seniority}</p>
               </div>
 
-              <button
-                onClick={()=>remove(p.id)}
-                style={{ color: "red" }}
-              >
+              <button onClick={()=>remove(p.id)} style={{ color:"red" }}>
                 Eliminar
               </button>
             </div>
