@@ -19,7 +19,6 @@ export default function Home() {
   const [selected, setSelected] = useState([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("");
-  const [editing, setEditing] = useState(null);
 
   useEffect(() => { load(); }, []);
 
@@ -54,24 +53,21 @@ export default function Home() {
   return (
     <div>
 
-      {/* ================= HEADER ================= */}
-      <div className="container" style={{ display: "flex", justifyContent: "space-between" }}>
-        <h1 style={{ fontSize: 28 }}>TalentRate</h1>
+      {/* HEADER */}
+      <div className="container" style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+        <h1 className="title">TalentRate</h1>
 
-        <button
-          className="btn-primary"
-          onClick={() => window.location.href = "/admin"}
-        >
+        <button className="btn-primary" onClick={()=>window.location.href="/admin"}>
           + Crear perfil
         </button>
       </div>
 
-      {/* ================= FILTROS ================= */}
-      <div className="container" style={{ display: "flex", gap: 10 }}>
+      {/* FILTROS */}
+      <div className="container" style={{ display:"flex", gap:10 }}>
         <input
           placeholder="Buscar recurso..."
           onChange={(e)=>setSearch(e.target.value)}
-          style={{ flex: 1 }}
+          style={{ flex:1 }}
         />
 
         <select onChange={(e)=>setFilter(e.target.value)}>
@@ -80,82 +76,91 @@ export default function Home() {
         </select>
       </div>
 
-      {/* ================= CARDS ================= */}
+      {/* CARDS */}
       <div className="container" style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill,minmax(230px,1fr))",
-        gap: 16
+        display:"grid",
+        gridTemplateColumns:"repeat(auto-fill,minmax(240px,1fr))",
+        gap:16
       }}>
         {filtered.map(p => (
           <div key={p.id} className="card">
 
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div style={{ display:"flex", justifyContent:"space-between" }}>
               <strong>{p.name}</strong>
-              <span style={{ fontSize: 12 }}>✏️</span>
+              <span>✏️</span>
             </div>
 
-            <p style={{ fontSize: 12, color: "#777" }}>{p.seniority}</p>
+            <p style={{ fontSize:12, color:"#777" }}>{p.seniority}</p>
 
-            <div style={{ marginTop: 10 }}>
-              <div style={{ fontWeight: 600 }}>
+            <div style={{ marginTop:10 }}>
+              <div style={{ fontWeight:600 }}>
                 {formatCOP(p.monthly_rate)}
               </div>
-              <div style={{ fontSize: 12, color: "#888" }}>
+              <div style={{ fontSize:12, color:"#888" }}>
                 {formatUSD(p.monthly_rate / TRM)}
               </div>
             </div>
 
-            <button
-              className="btn-primary"
-              style={{ marginTop: 10 }}
-              onClick={() => add(p)}
-            >
+            <button className="btn-primary" style={{ marginTop:12 }} onClick={()=>add(p)}>
               + Agregar
             </button>
+
           </div>
         ))}
       </div>
 
-      {/* ================= COTIZADOR ================= */}
+      {/* COTIZADOR */}
       <div className="container">
         <div className="card">
 
-          <h2 style={{ marginBottom: 10 }}>Cotización</h2>
+          <h2 style={{ marginBottom:15 }}>Cotización</h2>
 
           {selected.length === 0 && (
-            <p style={{ color: "#888" }}>Agrega perfiles para comenzar</p>
+            <p style={{ color:"#777" }}>Agrega perfiles para comenzar</p>
           )}
 
-          {selected.map(p => (
-            <div key={p.id} className="table-row">
+          {selected.length > 0 && (
+            <>
+              <div className="table-header">
+                <span>Recurso</span>
+                <span>Cantidad</span>
+                <span>Valor</span>
+                <span>Total</span>
+                <span></span>
+              </div>
 
-              <span>{p.name}</span>
+              {selected.map(p => (
+                <div key={p.id} className="table-row">
 
-              <input
-                type="number"
-                value={p.qty}
-                onChange={(e)=>{
-                  const val = Number(e.target.value);
-                  setSelected(prev =>
-                    prev.map(x =>
-                      x.id === p.id ? { ...x, qty: val } : x
-                    )
-                  );
-                }}
-              />
+                  <span>{p.name}</span>
 
-              <span>{formatCOP(p.monthly_rate)}</span>
-              <span>{formatCOP(p.monthly_rate * p.qty)}</span>
+                  <input
+                    type="number"
+                    value={p.qty}
+                    onChange={(e)=>{
+                      const val = Number(e.target.value);
+                      setSelected(prev =>
+                        prev.map(x =>
+                          x.id === p.id ? { ...x, qty: val } : x
+                        )
+                      );
+                    }}
+                  />
 
-              <button onClick={()=>remove(p.id)} style={{ color: "red" }}>
-                ✕
-              </button>
-            </div>
-          ))}
+                  <span>{formatCOP(p.monthly_rate)}</span>
+                  <span>{formatCOP(p.monthly_rate * p.qty)}</span>
 
-          <h3 style={{ textAlign: "right", marginTop: 15 }}>
-            Total: {formatCOP(total)}
-          </h3>
+                  <button onClick={()=>remove(p.id)} style={{ color:"red" }}>
+                    ✕
+                  </button>
+                </div>
+              ))}
+
+              <h3 style={{ textAlign:"right", marginTop:15 }}>
+                Total: {formatCOP(total)}
+              </h3>
+            </>
+          )}
 
         </div>
       </div>
